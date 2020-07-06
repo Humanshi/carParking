@@ -24,20 +24,26 @@ function enterParking() {
 function submitDetails() {
     let car = new Car(document.getElementById("licensePlate").value.toUpperCase());
     car.vehicleType = document.getElementById("vehicleType").value.toUpperCase();
-    let availableSpots = Common.freeParkingLot(car.vehicleType, JSON.parse(localStorage.getItem('storage')));
-    if (availableSpots.parking.length !== 0) {
-        document.getElementById("enterParking").style.display = "none";
-        if (Common.licensePLateData(car.licensePlate)) {
-            document.getElementById("spotId").style.display = "block";
-            document.getElementById('spotId').innerHTML = JSON.stringify(car.parkInSpot(car.licensePlate, car.vehicleType));
+    if(Object.keys(Common.parkingSpotSize()).includes(car.vehicleType)){
+        let availableSpots = Common.freeParkingLot(car.vehicleType, JSON.parse(localStorage.getItem('storage')));
+        if (availableSpots.parking.length !== 0) {
+            document.getElementById("enterParking").style.display = "none";
+            if (Common.licensePLateData(car.licensePlate)) {
+                document.getElementById("spotId").style.display = "block";
+                document.getElementById('spotId').innerHTML = JSON.stringify(car.parkInSpot(car.licensePlate, car.vehicleType));
+            } else {
+                document.getElementById("spotId").style.display = "block";
+                document.getElementById('spotId').innerHTML = Common.info().EXIST_LICENSE_PLATE_NUMBER;
+            }
         } else {
             document.getElementById("spotId").style.display = "block";
-            document.getElementById('spotId').innerHTML = Common.info().EXIST_LICENSE_PLATE_NUMBER;
+            document.getElementById('spotId').innerHTML = Common.info().NO_FREE_SPOT;
         }
     } else {
         document.getElementById("spotId").style.display = "block";
-        document.getElementById('spotId').innerHTML = Common.info().NO_FREE_SPOT;
+        document.getElementById('spotId').innerHTML = Common.info().ENTER_VALID_SPOT_TYPE;
     }
+
     document.getElementById("licensePlate").value ='';
 }
 

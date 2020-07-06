@@ -28,7 +28,8 @@ class Common {
             THANK_YOU: 'Thank you for your visit',
             NO_VEHICLE_LICENSE_NUMBER: 'We do not have any vehicle parked with provided license plate number',
             INTERNAL_ERROR: 'Internal Error Occurred',
-            EXIST_LICENSE_PLATE_NUMBER: 'Entered license plate number already exist, please enter valid license plate number'
+            EXIST_LICENSE_PLATE_NUMBER: 'Entered license plate number already exist, please enter valid license plate number',
+            ENTER_VALID_SPOT_TYPE:'Please enter a valid vehicle type'
         };
     }
 
