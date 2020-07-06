@@ -16,17 +16,6 @@
         }
     </style>
 </head>
-<script>
-    $(document).ready(function(){
-        let selectElem = $("#vehicleType");
-        $.each(Common.parkingSpotSize(), function(index, value){
-            $("<option/>", {
-                value: index,
-                text: value
-            }).appendTo(selectElem);
-        });
-    });
-</script>
 <body>
 <table style="width:100%">
     <tr>
@@ -54,8 +43,7 @@
 <br><br><br>
 <div id="enterParking" style="display: none">
     <input type="text" id="licensePlate" name="licensePlate" placeholder="Enter License Plate Number"><br><br>
-    <select name="vehicleType" id="vehicleType">
-    </select>
+    <input type="text" id="vehicleType" name="vehicleType" placeholder="Enter VehicleType"><br><br>
     <button type="button" onclick="submitDetails()">Enter Parking Details</button>
 </div>
 

@@ -40,10 +40,10 @@ class Common {
                 parkings = parkingSpots.filter(value => value.status ===this.storageStructure().statusFree && value.spotType===spotType);
                 type = spotType
                 if(parkings.length ===0){
-                    parkings = parkingSpots.filter(value => value.status ===this.storageStructure().statusFree  && value.spotType===spotType);
+                    parkings = parkingSpots.filter(value => value.status ===this.storageStructure().statusFree  && value.spotType===this.parkingSpotSize().SEDAN);
                     type =this.parkingSpotSize().SEDAN;
                     if(parkings.length ===0){
-                        parkings = parkingSpots.filter(value => value.status ===this.storageStructure().statusFree  && value.spotType===spotType);
+                        parkings = parkingSpots.filter(value => value.status ===this.storageStructure().statusFree  && value.spotType===this.parkingSpotSize().MINITRUCK);
                         type = this.parkingSpotSize().MINITRUCK;
                     }
                 }
@@ -52,7 +52,7 @@ class Common {
                 parkings = parkingSpots.filter(value => value.status ===this.storageStructure().statusFree && value.spotType===spotType);
                 type =spotType
                 if(parkings.length ===0){
-                    parkings = parkingSpots.filter(value => value.status ===this.storageStructure().statusFree && value.spotType===spotType);
+                    parkings = parkingSpots.filter(value => value.status ===this.storageStructure().statusFree && value.spotType===this.parkingSpotSize().MINITRUCK);
                     type = this.parkingSpotSize().MINITRUCK;
                 }
                 return {parking:parkings, spotType:type};
@@ -71,7 +71,8 @@ class Common {
 
     static refreshStorage(){
         localStorage.setItem('storage', JSON.stringify(parkingLot.parkingSpots));
-        localStorage.setItem('storage', JSON.stringify(parkingSpotStatus));
+        localStorage.setItem('storageStatus', JSON.stringify(parkingSpotStatus));
+        window.location.reload();
     }
 
     static reload(){

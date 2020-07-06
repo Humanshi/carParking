@@ -32,7 +32,8 @@ class Vehicle {
                     localStorage.setItem('storage', JSON.stringify(this.parkingSpots));
                     localStorage.setItem('storageStatus', JSON.stringify(storageStatus));
                 });
-                window.location.reload();
+
+                setTimeout(function(){window.location.reload();  }, 3000);
                 return 'Car has been parked and the parking fee will be ' + parkingData.parking[0].amount;
             }
         }catch (e) {
@@ -57,7 +58,7 @@ class Vehicle {
                 storageStatus[spotStat].occupied = storageStatus[spotStat].occupied -1;
                 localStorage.setItem('storage', JSON.stringify(this.parkingSpots));
                 localStorage.setItem('storageStatus', JSON.stringify(storageStatus));
-                window.location.reload();
+                setTimeout(function(){window.location.reload();  }, 3000);
                 return Common.info().THANK_YOU;
             } else {
                 return Common.info().NO_VEHICLE_LICENSE_NUMBER;
