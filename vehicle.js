@@ -14,46 +14,57 @@ class Vehicle {
 
     parkInSpot(licensePlate, spotType) {
         try {
-            let position;
+            let position,storageStatus;
+            storageStatus =JSON.parse(localStorage.getItem('storageStatus'));
             this.parkingSpots = JSON.parse(localStorage.getItem('storage'));
             let parkingData = Common.freeParkingLot(spotType, this.parkingSpots);
             if (parkingData.parking.length !== 0) {
-                this.parkingSpots[parkingData.spotType].find(value => {
+                this.parkingSpots.find(value => {
                     if (value && value.spotId === parkingData.parking[0].spotId) {
-                        position = this.parkingSpots[parkingData.spotType].indexOf(value);
-                        this.parkingSpots[parkingData.spotType][position].status = 'occupied';
-                        this.parkingSpots[parkingData.spotType][position].licenseNumber = licensePlate;
+                        position = this.parkingSpots.indexOf(value);
+                        this.parkingSpots[position].status = Common.storageStructure().statusOccupied;
+                        this.parkingSpots[position].licenseNumber = licensePlate;
+                        let spotStat = storageStatus.find(val=> val.spotType ===value.spotType);
+                        spotStat = storageStatus.indexOf(spotStat);
+                        storageStatus[spotStat].available = storageStatus[spotStat].available -1;
+                        storageStatus[spotStat].occupied = storageStatus[spotStat].occupied +1;
                     }
                     localStorage.setItem('storage', JSON.stringify(this.parkingSpots));
+                    localStorage.setItem('storageStatus', JSON.stringify(storageStatus));
                 });
-                return {
-                    spotId: parkingData.parking[0].spotId,
-                    spotType: parkingData.spotType,
-                    amount: parkingData.parking[0].amount
-                };
+                window.location.reload();
+                return 'Car has been parked and the parking fee will be ' + parkingData.parking[0].amount;
             }
         }catch (e) {
             console.log(e);
-            return 'Internal Error Occured';
+            return Common.info().INTERNAL_ERROR;
         }
     }
 
-    clearSpot(licensePlate, spotType) {
+    clearSpot(licensePlate) {
         try{
-            let position;
+            let position,storageStatus;
+            storageStatus =JSON.parse(localStorage.getItem('storageStatus'));
             this.parkingSpots= JSON.parse(localStorage.getItem('storage'));
-            this.parkingSpots[spotType].find(value =>{
-                if(value && value.licenseNumber===licensePlate){
-                    position= this.parkingSpots[spotType].indexOf(value);
-                    this.parkingSpots[spotType][position].status ='free';
-                    this.parkingSpots[spotType][position].licenseNumber ='';
-                }
+            let data= this.parkingSpots.find(value => value.licenseNumber===licensePlate);
+            if(data){
+                position= this.parkingSpots.indexOf(data);
+                this.parkingSpots[position].status =Common.storageStructure().statusFree;
+                this.parkingSpots[position].licenseNumber =Common.storageStructure().licenseNumber;
+                let spotStat = storageStatus.find(val=> val.spotType ===data.spotType);
+                spotStat = storageStatus.indexOf(spotStat);
+                storageStatus[spotStat].available = storageStatus[spotStat].available +1;
+                storageStatus[spotStat].occupied = storageStatus[spotStat].occupied -1;
                 localStorage.setItem('storage', JSON.stringify(this.parkingSpots));
-            });
-            return 'Thank you for your visit';
+                localStorage.setItem('storageStatus', JSON.stringify(storageStatus));
+                window.location.reload();
+                return Common.info().THANK_YOU;
+            } else {
+                return Common.info().NO_VEHICLE_LICENSE_NUMBER;
+            }
         } catch (e) {
             console.log(e);
-            return 'Internal Error Occured';
+            return Common.info().INTERNAL_ERROR;
         }
 
     }

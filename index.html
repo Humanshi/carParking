@@ -3,16 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <title>Car Parking</title>
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script  src="common.js"></script>
     <script  src="storage.js"></script>
     <script  src="vehicle.js"></script>
     <script  src="carParking.js"></script>
+
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
 </head>
+<script>
+    $(document).ready(function(){
+        let selectElem = $("#vehicleType");
+        $.each(Common.parkingSpotSize(), function(index, value){
+            $("<option/>", {
+                value: index,
+                text: value
+            }).appendTo(selectElem);
+        });
+    });
+</script>
 <body>
-<input type="text" id="licensePlate" name="licensePlate" placeholder="Enter License Plate Number"><br><br>
-<input type="text" id="vehicleType" name="vehicleType" placeholder="Enter Vehicle Type"><br><br>
-<p id="spotId"></p>
+<table style="width:100%">
+    <tr>
+        <th>Parking Spot Type</th>
+        <th>Available Spots</th>
+        <th>Occupied Spots</th>
+    </tr>
+    <script type="text/javascript">
+        let data =JSON.parse(localStorage.getItem('storageStatus'));
+        for(let i =0; i<data.length; i++)
+        {
+            document.write("<tr>");
+            document.write("<td>"+data[i].spotType+"</td>");
+            document.write("<td>"+data[i].available+"</td>");
+            document.write("<td>"+data[i].occupied+"</td>");
+            document.write("</tr>");
+        }
+    </script>
+</table>
+<br>
 <button type="button" onclick="enterParking()">Enter</button>
 <button type="button" onclick="exitParking()">Exit</button>
+<button type="button" title="Click to refresh local storage data" onclick="Common.refreshStorage()">Refresh Storage</button>
+
+<br><br><br>
+<div id="enterParking" style="display: none">
+    <input type="text" id="licensePlate" name="licensePlate" placeholder="Enter License Plate Number"><br><br>
+    <select name="vehicleType" id="vehicleType">
+    </select>
+    <button type="button" onclick="submitDetails()">Enter Parking Details</button>
+</div>
+
+<div id="exitParking" style="display: none">
+    <input type="text" id="licenseNumber" name="licenseNumber" placeholder="Enter License Plate Number"><br><br>
+    <button type="button" onclick="exitDetails()">Exit Parking</button>
+</div>
+<p id="spotId" style="display: none"></p>
+
 </body>
 </html>
